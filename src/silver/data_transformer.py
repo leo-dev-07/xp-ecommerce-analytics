@@ -6,7 +6,7 @@ Handles cleaning and transformation of click stream data.
 import logging
 from datetime import datetime, timedelta
 from typing import List, Dict, Any
-from src.bronze.data_ingestion import ClickStreamData, ProductViewEvent, ProductClickEvent, SearchEvent
+from bronze.data_ingestion import ClickStreamData, ProductViewEvent, ProductClickEvent, SearchEvent
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
