@@ -1,0 +1,2 @@
+[console_scripts]
+ecommerce-pipeline = src.main:main
