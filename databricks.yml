@@ -1,0 +1,116 @@
+# Databricks Asset Bundle configuration
+name: data-lake-pipeline
+
+# Define the workspace context
+workspace:
+  # This section is optional - if not specified, will use default workspace settings
+  host: https://dbc-a33a7d21-2710.cloud.databricks.com/ # Replace with your actual workspace URL
+
+# Define the bundle targets
+targets:
+  dev:
+    # Target configuration for development environment
+    workspace:
+      host: https://dbc-a33a7d21-2710.cloud.databricks.com/
+    # Default location in the workspace
+    default_catalog: main
+    default_schema: dev
+
+# Define the projects in the bundle
+projects:
+- name: bronze-layer
+  path: src/bronze
+  type: python_wheel
+
+- name: silver-layer
+  path: src/silver
+  type: python_wheel
+
+- name: gold-layer
+  path: src/gold
+  type: python_wheel
+
+- name: notebook-layer
+  path: src/notebook
+  type: notebook
+
+# Define the jobs that will run the pipeline components
+jobs:
+- name: bronze-ingestion-job
+  tasks:
+  - name: bronze-ingestion-task
+    job_cluster: bronze-cluster
+    notebook_path: /Users/<your-username>/notebooks/bronze_ingestion_notebook
+    # This would reference a notebook in the notebook layer
+
+- name: silver-transformation-job
+  tasks:
+  - name: silver-transformation-task
+    job_cluster: silver-cluster
+    notebook_path: /Users/<your-username>/notebooks/silver_transformation_notebook
+
+- name: gold-analytics-job
+  tasks:
+  - name: gold-analytics-task
+    job_cluster: gold-cluster
+    notebook_path: /Users/<your-username>/notebooks/gold_analytics_notebook
+
+# Define clusters used by the jobs
+job_clusters:
+- name: bronze-cluster
+  new_cluster:
+    spark_version: 14.0.x-scala2.12
+    node_type_id: Standard_DS3_v2
+    autoscale:
+      min_workers: 1
+      max_workers: 4
+    spark_conf:
+      spark.sql.adaptive.enabled: "true"
+      spark.sql.adaptive.coalescePartitions.enabled: "true"
+
+- name: silver-cluster
+  new_cluster:
+    spark_version: 14.0.x-scala2.12
+    node_type_id: Standard_DS3_v2
+    autoscale:
+      min_workers: 1
+      max_workers: 4
+    spark_conf:
+      spark.sql.adaptive.enabled: "true"
+      spark.sql.adaptive.coalescePartitions.enabled: "true"
+
+- name: gold-cluster
+  new_cluster:
+    spark_version: 14.0.x-scala2.12
+    node_type_id: Standard_DS3_v2
+    autoscale:
+      min_workers: 1
+      max_workers: 4
+    spark_conf:
+      spark.sql.adaptive.enabled: "true"
+      spark.sql.adaptive.coalescePartitions.enabled: "true"
+
+# Define the packages that will be built and deployed
+packages:
+- name: bronze-layer-package
+  path: src/bronze
+  type: python_wheel
+
+- name: silver-layer-package
+  path: src/silver
+  type: python_wheel
+
+- name: gold-layer-package
+  path: src/gold
+  type: python_wheel
+
+# Define dependencies for the packages
+dependencies:
+- name: pyspark
+  version: "3.4.0"
+- name: pandas
+  version: "2.0.0"
+- name: numpy
+  version: "1.24.0"
+- name: databricks-sdk
+  version: "0.18.0"
