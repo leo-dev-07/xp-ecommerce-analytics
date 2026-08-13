@@ -1,7 +1,5 @@
 # File: src/scripts/generate_events.py
 """
-
-
 Event Generation Script for E-commerce Analytics Pipeline
 Uses schema definitions from 1_dim_bronze.ipynb metadata section.
 """
