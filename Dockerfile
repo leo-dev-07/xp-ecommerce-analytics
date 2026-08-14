@@ -16,4 +16,4 @@ COPY . .
 RUN mkdir -p data/raw
 
 # Default command
-CMD ["python", "scripts/generate_events.py"]
+CMD ["python", "scripts/event_generator_with_azure.py"]

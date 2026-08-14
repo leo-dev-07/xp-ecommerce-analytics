@@ -1,4 +1,0 @@
-# Test requirements for Databricks Asset Bundle
-pytest>=6.0.0
-unittest2>=1.1.0
-coverage>=5.0.0

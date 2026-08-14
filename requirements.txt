@@ -3,3 +3,9 @@ python>=3.9
 elasticsearch==7.17.0
 pandas==1.5.0
 numpy==1.24.0
+azure-identity>=1.12.0
+azure-mgmt-storage>=21.0.0
+azure-storage-blob>=12.14.0
+pytest>=6.0.0
+unittest2>=1.1.0
+coverage>=5.0.0
