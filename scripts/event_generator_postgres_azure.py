@@ -396,6 +396,16 @@ def generate_order_items_table(
 class PostgreSQLWriter:
     """Handles writing data to PostgreSQL database."""
     
+    # Map table names to their primary key columns
+    PRIMARY_KEYS = {
+        'brz_category': 'category_code',
+        'brz_brands': 'brand_code',
+        'brz_customers': 'customer_id',
+        'brz_calendar': 'date_code',
+        'brz_products': 'product_id',
+        'brz_order_items': 'order_item_id',
+    }
+    
     def __init__(self, config: Dict[str, Any]):
         self.config = config
         self.conn = None
@@ -504,6 +514,12 @@ class PostgreSQLWriter:
         # Add dt_update timestamp (milliseconds since epoch)
         dt_update = int(datetime.now().timestamp() * 1000)
         
+        # Get primary key for this table
+        primary_key = self.PRIMARY_KEYS.get(table_name)
+        if not primary_key:
+            logger.error(f"No primary key defined for table {table_name}")
+            return
+        
         # Get column names from first row
         columns = list(rows[0].keys())
         columns.append('dt_update')
@@ -512,13 +528,13 @@ class PostgreSQLWriter:
         placeholders = ', '.join(['%s'] * len(columns))
         column_names = ', '.join(columns)
         
-        # Create update clause for conflict resolution
-        update_clause = ', '.join([f"{col} = EXCLUDED.{col}" for col in columns if col != list(rows[0].keys())[0]])
+        # Create update clause for conflict resolution (update all columns except primary key)
+        update_clause = ', '.join([f"{col} = EXCLUDED.{col}" for col in columns if col != primary_key])
         
         insert_sql = f"""
             INSERT INTO {table_name} ({column_names})
             VALUES ({placeholders})
-            ON CONFLICT ({list(rows[0].keys())[0]})
+            ON CONFLICT ({primary_key})
             DO UPDATE SET {update_clause}
         """
         
