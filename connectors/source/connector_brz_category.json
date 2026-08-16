@@ -1,0 +1,20 @@
+{
+  "name": "postgres-source-brz-category",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "connection.url": "jdbc:postgresql://postgres:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "password",
+    "mode": "timestamp",
+    "timestamp.column.name": "dt_update",
+    "table.whitelist": "public.brz_category",
+    "topic.prefix": "ecommerce.",
+    "validate.non.null": "false",
+    "poll.interval.ms": "5000",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false"
+  }
+}

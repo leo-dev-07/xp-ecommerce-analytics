@@ -1,0 +1,16 @@
+# Ignore files that don't need to be in the Docker image
+*.md
+*.sh
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+*.log
+.DS_Store
+generate_events.py
+event_generator_with_azure.py
+data_pipeline.py
+ingest_data.py
+process_analytics.py
+transform_data.py

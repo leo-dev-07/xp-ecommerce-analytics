@@ -1,0 +1,25 @@
+{
+	"name": "azure-blob-sink-ecommerce-all",
+	"config": {
+		"connector.class": "io.confluent.connect.azure.blob.AzureBlobStorageSinkConnector",
+		"tasks.max": "6",
+		"topics": "ecommerce.brz_category,ecommerce.brz_brands,ecommerce.brz_customers,ecommerce.brz_calendar,ecommerce.brz_products,ecommerce.brz_order_items",
+		"azblob.account.name": "${env:AZURE_STORAGE_ACCOUNT_NAME}",
+		"azblob.account.key": "${env:AZURE_STORAGE_ACCOUNT_KEY}",
+		"azblob.container.name": "${env:AZURE_STORAGE_CONTAINER_NAME}",
+		"format.class": "io.confluent.connect.azure.blob.format.json.JsonFormat",
+		"flush.size": "1000",
+		"rotate.schedule.interval.ms": "300000",
+		"topics.dir": "kafka-topics",
+		"partitioner.class": "io.confluent.connect.storage.partitioner.TimeBasedPartitioner",
+		"path.format": "'year'=YYYY/'month'=MM/'day'=dd/'hour'=HH",
+		"partition.duration.ms": "3600000",
+		"timestamp.extractor": "Record",
+		"locale": "en-US",
+		"timezone": "UTC",
+		"value.converter": "org.apache.kafka.connect.json.JsonConverter",
+		"value.converter.schemas.enable": "false",
+		"key.converter": "org.apache.kafka.connect.json.JsonConverter",
+		"key.converter.schemas.enable": "false"
+	}
+}
